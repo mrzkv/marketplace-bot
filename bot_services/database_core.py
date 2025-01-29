@@ -1,21 +1,33 @@
 import asyncio
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, create_async_engine
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String
 
 Base = declarative_base()
-async_engine = create_async_engine(
-        url= 'sqlite+aiosqlite:///app.db',
+async_engine: AsyncEngine = create_async_engine(
+        url= f'sqlite+aiosqlite:///app.db',
         echo=True)
+Async_Session = sessionmaker(async_engine, expire_on_commit=False, class_=AsyncSession)
+
+
+
+# Асинхронный генератор сессий
+async def get_async_session() -> AsyncSession:
+    """
+    Для использования пишем это:
+    async for session in await get_async_session():
+    """
+    async with Async_Session() as session:
+        yield session
 
 
 # Таблица данных пользователей
 class UserData(Base):
     __tablename__ = 'users_data'
-    id = Column(Integer, primary_key=True, autoincrement=True)  # Автоинкрементный ID
-    user_id = Column(Integer, nullable=False)  # Число, не нулевое
-    username = Column(String, nullable=True)  # Строка
+    id = Column(Integer, primary_key=True, autoincrement=True, unique = True)  # Автоинкрементный ID
+    user_id = Column(Integer, nullable=False, unique=True)  # Число, не нулевое
+    username = Column(String, nullable=True)  # Юзернейм, строка
     full_name = Column(String, nullable=True)  # Полное имя, строка
     registration_date = Column(String, nullable=False)  # Дата регистрации
     admin_rank = Column(String, nullable=False)  # Ранг администратора, строка
@@ -37,5 +49,4 @@ class BlockedUsers(Base):
 async def create_database_and_tables():
     async with async_engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
-
 

@@ -4,7 +4,7 @@ from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from bot_services.database_core import create_database_and_tables
 from routers.start_router import router as start_router
-from config import get_token
+from bot_services.config import get_token
 
 dp = Dispatcher()
 dp.include_router(start_router)
