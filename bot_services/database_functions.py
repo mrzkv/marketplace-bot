@@ -91,5 +91,5 @@ async def get_user_data_by_user_id(user_id: int) -> str:
         result = await session.execute(
             select(UserData).where(UserData.user_id == user_id)
         )
-        username = result.scalar()
-        return username
+        user_data = result.scalar()
+        return user_data
