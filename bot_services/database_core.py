@@ -38,9 +38,9 @@ class UserData(Base):
 class BlockedUsers(Base):
     __tablename__ = 'blocked_users'
     id = Column(Integer, primary_key=True, autoincrement=True)  # Автоинкрементный ID
-    user_id = Column(Integer, nullable=False)  # Число, не нулевое
+    user_id = Column(Integer, nullable=False)  # ID пользователя
     reason = Column(String, nullable=False)  # Причина блокировки
-    admin_username = Column(String, nullable=False) # Юзернейм админа
+    admin_id = Column(Integer, nullable=False) # ID админа
     additional_info = Column(String, nullable=True) # Дополнительная информация
     date = Column(String, nullable=True)  # Дата блокировки
 
