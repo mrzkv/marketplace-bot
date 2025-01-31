@@ -21,18 +21,26 @@ async def get_async_session() -> AsyncSession:
     async with Async_Session() as session:
         yield session
 
+# Таблица пользовательских профилей
+class UserProfileData(Base):
+    __tablename__ = 'users_profile'
+    id = Column(Integer, primary_key=True, autoincrement=True, unique = True)  # Автоинкрементный ID
+    user_id = Column(Integer, nullable=False, unique=True)  # ID пользователя, число
+    photo = Column(String, nullable= True) # Фото пользователя, телеграм строка
+    phone_number = Column(String, nullable=True)  # Номер телефона, строка
+    home_address = Column(String, nullable=True)  # Домашний адрес, строка
+    surname_name = Column(String, nullable=True) # Фамилия Имя, строка
+
 
 # Таблица данных пользователей
 class UserData(Base):
     __tablename__ = 'users_data'
     id = Column(Integer, primary_key=True, autoincrement=True, unique = True)  # Автоинкрементный ID
-    user_id = Column(Integer, nullable=False, unique=True)  # Число, не нулевое
+    user_id = Column(Integer, nullable=False, unique=True)  # ID пользователя
     username = Column(String, nullable=True)  # Юзернейм, строка
     full_name = Column(String, nullable=True)  # Полное имя, строка
     registration_date = Column(String, nullable=False)  # Дата регистрации
-    admin_rank = Column(String, nullable=False)  # Ранг администратора, строка
-    phone_number = Column(String, nullable=True)  # Номер телефона, строка
-    home_address = Column(String, nullable=True)  # Домашний адрес, строка
+    admin_rank = Column(Integer, nullable=False)  # Ранг администратора, строка
 
 # Таблица заблокированных пользователей
 class BlockedUsers(Base):
